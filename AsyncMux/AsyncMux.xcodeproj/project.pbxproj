@@ -14,6 +14,7 @@
 		3635173129746D2700F9B045 /* MuxCacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3635172929746D2600F9B045 /* MuxCacher.swift */; };
 		3635173229746D2700F9B045 /* MuxRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3635172A29746D2600F9B045 /* MuxRepository.swift */; };
 		36E20F2F298215640022D151 /* Multiplexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E20F2E298215640022D151 /* Multiplexer.swift */; };
+		426DA26C29EEFC4C0015F328 /* MuxDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 426DA26B29EEFC4C0015F328 /* MuxDB.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		3635172A29746D2600F9B045 /* MuxRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuxRepository.swift; sourceTree = "<group>"; };
 		36E20F2E298215640022D151 /* Multiplexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Multiplexer.swift; sourceTree = "<group>"; };
 		36F7322B297AE3850019807B /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		426DA26B29EEFC4C0015F328 /* MuxDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuxDB.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				3635172529746D2600F9B045 /* AsyncError.swift */,
 				3635172729746D2600F9B045 /* AsyncUtils.swift */,
 				362CC58D29746BE900059933 /* AsyncMux.h */,
+				426DA26B29EEFC4C0015F328 /* MuxDB.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -156,6 +159,7 @@
 				3635172D29746D2700F9B045 /* AsyncError.swift in Sources */,
 				3635173129746D2700F9B045 /* MuxCacher.swift in Sources */,
 				3635173029746D2700F9B045 /* AsyncMedia.swift in Sources */,
+				426DA26C29EEFC4C0015F328 /* MuxDB.swift in Sources */,
 				36E20F2F298215640022D151 /* Multiplexer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
