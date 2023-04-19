@@ -126,24 +126,73 @@ public class WeatherDataStore {
 }
 
 public class MuxDB {
+  
+  public static func load<T>(db: Connection?, dataTable: Table) -> [T] {
+      var data: [T] = []
+      guard let database = db else { return [] }
+
+      do {
+          for item in try database.prepare(self.dataTable) {
+            data.append(item)
+          }
+      } catch {
+          print(error)
+      }
+      return data
+  }
 
     public static func load<T: Decodable>(domain: String, key: String, type: T.Type) -> T? {
-      // needs to change to WeatherDataStore.getAll()
         return try? JSONDecoder().decode(type, from: Data(contentsOf: cacheFileURL(domain: domain, key: key, create: false)))
     }
 
+  public static func save<T>(db: Connection?, dataTable: Table, data: T) -> Int64? {
+    guard let database = db else { return nil }
+
+  let insert = dataTable.insert(data)
+    do {
+        let rowID = try database.run(insert)
+        return rowID
+    } catch {
+        print(error)
+        return nil
+    }
+}
     public static func save<T: Encodable>(_ result: T, domain: String, key: String) {
-      // needs to change to WeatherDataStore.insert()
       let json = try! JSONEncoder().encode(result).write(to: cacheFileURL(domain: domain, key: key, create: true), options: .atomic)
     }
 
+  public static func delete(db: Connection?, dataTable: Table, id: Int) -> Bool {
+    guard let database = db else {
+        return false
+    }
+    do {
+        let filter = dataTable.filter(self.id == id)
+        try database.run(filter.delete())
+        return true
+    } catch {
+        print(error)
+        return false
+    }
+}
+  
     public static func delete(domain: String, key: String) {
-      // needs to change to WeatherDataStore.delete()
         try? FileManager.default.removeItem(at: cacheFileURL(domain: domain, key: key, create: false))
     }
 
+  public static func deleteDomain(db: Connection?, dataTable: Table) -> Bool {
+    guard let database = db else {
+      return false
+    }
+    do {
+      try database.run(dataTable.drop())
+      return true
+    } catch {
+      print(error)
+      return false
+    }
+  }
+  
     public static func deleteDomain(_ domain: String) {
-      // needs to change to WeatherDataStore.deleteTable()
         try? FileManager.default.removeItem(at: cacheDirURL(domain: domain, create: false))
     }
 
