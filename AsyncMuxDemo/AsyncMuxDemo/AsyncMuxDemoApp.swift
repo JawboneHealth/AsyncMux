@@ -11,6 +11,20 @@ import AsyncMux
 @main
 struct AsyncMuxDemoApp: App {
     @Environment(\.scenePhase) var scenePhase
+  
+ 
+      
+  init() {
+    if DBConnection.conn != nil {
+      do {
+        try DBConnection.open(dbPath: FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask)[0])
+      } catch {
+        print("error")
+      }
+    } else {
+      print("Connection already existed")
+    }
+  }
 
     var body: some Scene {
         scene()
