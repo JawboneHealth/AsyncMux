@@ -15,8 +15,8 @@ public class MuxCacher {
         return try? JSONDecoder().decode(type, from: Data(contentsOf: cacheFileURL(domain: domain, key: key, create: false)))
     }
 
-    public static func save<T: Encodable>(_ result: T, domain: String, key: String) {
-        try! JSONEncoder().encode(result).write(to: cacheFileURL(domain: domain, key: key, create: true), options: .atomic)
+    public static func save<T: Encodable>(_ object: T, domain: String, key: String) {
+        MuxDB.shared.save(key: domain + "/" + key, data: object)
     }
 
     public static func delete(domain: String, key: String) {
