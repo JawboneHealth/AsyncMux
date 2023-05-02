@@ -36,7 +36,7 @@ class MuxDB {
     func save<T: Encodable>(key: String, data: T) -> Int64? {
         let json = try! JSONEncoder().encode(data)
         
-        let insert = dataTable.insert(
+        let insert = dataTable.insert(or: .replace,
             self.key <- key,
             self.data <- json
             )
@@ -46,6 +46,15 @@ class MuxDB {
         } catch {
             print(error)
             return nil
+        }
+    }
+    
+    func delete(keyToDelete: String) {
+        let itemToDelete = dataTable.filter(key == keyToDelete)
+        do {
+            try db.run(itemToDelete.delete())
+        } catch {
+            print(error)
         }
     }
     

@@ -20,7 +20,7 @@ public class MuxCacher {
     }
 
     public static func delete(domain: String, key: String) {
-        try? FileManager.default.removeItem(at: cacheFileURL(domain: domain, key: key, create: false))
+        MuxDB.shared.delete(key: key);
     }
 
     public static func deleteDomain(_ domain: String) {
