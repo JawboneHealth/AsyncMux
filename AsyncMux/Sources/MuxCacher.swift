@@ -12,7 +12,7 @@ import Foundation
 public class MuxCacher {
 
     public static func load<T: Decodable>(domain: String, key: String, type: T.Type) -> T? {
-        return try? JSONDecoder().decode(type, from: Data(contentsOf: cacheFileURL(domain: domain, key: key, create: false)))
+        return MuxDB.shared.load(keyToLoad: domain + "/" + key, type: type)
     }
 
     public static func save<T: Encodable>(_ object: T, domain: String, key: String) {
@@ -20,7 +20,7 @@ public class MuxCacher {
     }
 
     public static func delete(domain: String, key: String) {
-        MuxDB.shared.delete(key: key);
+        MuxDB.shared.delete(keyToDelete: key);
     }
 
     public static func deleteDomain(_ domain: String) {

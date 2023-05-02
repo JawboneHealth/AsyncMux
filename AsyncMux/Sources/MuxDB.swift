@@ -58,4 +58,17 @@ class MuxDB {
         }
     }
     
+    func load<T: Decodable>(keyToLoad: String, type: T.Type) -> T? {
+        let items = dataTable.filter(key == keyToLoad)
+        do {
+            let item = try db.pluck(items)
+            let decodedItem = try JSONDecoder().decode(type, from: (item?[data])!)
+            print("Loaded Item: \(decodedItem)")
+            return decodedItem
+        } catch {
+            print(error)
+            return nil
+        }
+    }
+    
 }
