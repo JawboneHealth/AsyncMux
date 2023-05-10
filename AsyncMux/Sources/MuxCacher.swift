@@ -20,7 +20,7 @@ public class MuxCacher {
     }
 
     public static func delete(domain: String, key: String) {
-        MuxDB.shared.delete(keyToDelete: key);
+        MuxDB.shared.delete(keyToDelete: domain + "/" + key);
     }
 
     public static func deleteDomain(_ domain: String) {
