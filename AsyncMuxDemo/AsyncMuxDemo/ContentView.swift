@@ -12,6 +12,9 @@ import AsyncMux
 
 private let backgroundURL = URL(string: "https://images.unsplash.com/photo-1513051265668-0ebab31671ae")!
 
+class WeatherItems: ObservableObject {
+    @Published var items: [WeatherItem] = []
+}
 
 struct ContentView: View {
     
@@ -27,7 +30,7 @@ struct ContentView: View {
             .preferredColorScheme(.dark)
         
             .serverTask(withAlert: true) {
-                items = try await WeatherAPI.reload(refresh: false)
+                items = try await WeatherAPI.reload(refresh: false, placeNames: <#T##[String]#>)
             }
         
             .serverRefreshable(withAlert: false) {
@@ -52,7 +55,6 @@ struct ContentView: View {
                 if !citiesToDisplay.contains(selectedCity) {
                     citiesToDisplay.append(selectedCity)
                 }
-                print(citiesToDisplay)
             }
         }
         List {

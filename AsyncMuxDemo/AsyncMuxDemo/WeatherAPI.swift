@@ -41,13 +41,10 @@ struct WeatherItem: Hashable {
 
 class WeatherAPI {
     
-    static let placeNames: [String] = ["New York, US", "London, UK", "Paris, FR", "Tokyo, JP"]
+//    static let placeNames: [String] = ["New York, US", "London, UK", "Paris, FR", "Tokyo, JP"]
     
-    
-    static func reload(refresh: Bool) async throws -> [WeatherItem] {
-        let tasks = try await WeatherAPI.places
-            .refresh(refresh)
-            .request()
+    static func reload(refresh: Bool, placeNames: [String]) async throws -> [WeatherItem] {
+        let tasks = try await resolve(placeNames: placeNames)
             .map { place in
                 Task {
                     try await WeatherItem(place: place, weather: WeatherAPI.weather
@@ -63,7 +60,7 @@ class WeatherAPI {
     }
     
     
-    private static let places = Multiplexer {
+    private static func resolve(placeNames: [String]) async throws -> [WeatherPlace]{
         // Geocoding requests should be performed one at a time, hence the loop
         var result: [WeatherPlace] = []
         for name in placeNames {
@@ -93,7 +90,7 @@ class WeatherAPI {
             }
         }
         return result
-    }.register()
+    }
     
     
     private static let weather = MultiplexerMap { key in
