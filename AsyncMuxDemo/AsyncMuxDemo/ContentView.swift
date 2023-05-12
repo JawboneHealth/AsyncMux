@@ -12,17 +12,13 @@ import AsyncMux
 
 private let backgroundURL = URL(string: "https://images.unsplash.com/photo-1513051265668-0ebab31671ae")!
 
-class WeatherItems: ObservableObject {
-    @Published var items: [WeatherItem] = []
-}
-
 struct ContentView: View {
     
     @State var items: [WeatherItem] = []
     @State var isLoading: Bool = false
     @State var selectedCity: String = ""
-    @State var citiesToDisplay: [String] = []
-    let cities: [String] = ["New York", "London", "Paris", "Tokyo"]
+    @State var citiesToDisplay: [String] = ["New York, US", "London, GB", "Paris, FR", "Tokyo, JP"]
+    @FocusState private var isFocused : Bool
     
     var body: some View {
         listView()
@@ -30,11 +26,11 @@ struct ContentView: View {
             .preferredColorScheme(.dark)
         
             .serverTask(withAlert: true) {
-                items = try await WeatherAPI.reload(refresh: false, placeNames: <#T##[String]#>)
+                items = try await WeatherAPI.reload(refresh: false, placeNames: citiesToDisplay)
             }
         
             .serverRefreshable(withAlert: false) {
-                items = try await WeatherAPI.reload(refresh: true)
+                items = try await WeatherAPI.reload(refresh: true, placeNames: citiesToDisplay)
             }
     }
     
@@ -46,20 +42,21 @@ struct ContentView: View {
                 .overlay(ProgressView())
         }
         else {
-            Picker("Please choose a color", selection: $selectedCity) {
-                ForEach(cities, id: \.self) {
-                    Text($0)
-                }
-            }
-            .onChange(of: selectedCity) { _ in
+            TextField(
+                "Enter a location",
+                text: $selectedCity
+            )
+            .focused($isFocused)
+            .onSubmit {
                 if !citiesToDisplay.contains(selectedCity) {
                     citiesToDisplay.append(selectedCity)
                 }
+                print(citiesToDisplay)
+                print(items)
             }
-        }
-        List {
-            ForEach(items, id: \.self) { item in
-                if citiesToDisplay.contains(item.place.city) {
+            
+            List {
+                ForEach(items, id: \.self) { item in
                     HStack {
                         Text("\(item.place.city), \(item.place.countryCode)")
                         Spacer()
@@ -73,14 +70,25 @@ struct ContentView: View {
                     }
                     .listRowBackground(Color.clear)
                 }
-                
+                .onDelete(perform: delete)
             }
+            .listStyle(.inset)
+            .font(.title2)
+            .scrollContentBackground(.hidden)
         }
-        .listStyle(.inset)
-        .font(.title2)
-        .scrollContentBackground(.hidden)
+    }
+    
+    func delete(at offsets: IndexSet) {
+        items.remove(atOffsets: offsets)
+        citiesToDisplay.remove(atOffsets: offsets)
+    }
+    
+    func getWeatherItem(city: String) async throws -> [WeatherItem] {
+        return try await WeatherAPI.reload(refresh: true, placeNames: [city])
     }
 }
+
+
 
 private func backgroundImageView() -> some View {
     RemoteImage(url: backgroundURL) { image in
