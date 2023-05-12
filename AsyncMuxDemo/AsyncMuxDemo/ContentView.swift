@@ -43,9 +43,11 @@ struct ContentView: View {
         }
         else {
             TextField(
-                "Enter a location",
+                "ex. Munich, GR",
                 text: $selectedCity
             )
+            .padding(20)
+            .font(.system(size: 24))
             .focused($isFocused)
             .onSubmit {
                 if !citiesToDisplay.contains(selectedCity) {
@@ -61,12 +63,6 @@ struct ContentView: View {
                         Text("\(item.place.city), \(item.place.countryCode)")
                         Spacer()
                         Text(item.weather.map { "\(Int(round($0.currentWeather.temperature)))ºC" } ?? "-")
-                        Button(action: {
-                            items.remove(at:items.firstIndex(of: item)!)
-                            citiesToDisplay.remove(at: citiesToDisplay.firstIndex(of: item.place.city)!)
-                        }, label: {
-                            Text("Delete")
-                        })
                     }
                     .listRowBackground(Color.clear)
                 }
@@ -81,14 +77,14 @@ struct ContentView: View {
     func delete(at offsets: IndexSet) {
         items.remove(atOffsets: offsets)
         citiesToDisplay.remove(atOffsets: offsets)
+        print(citiesToDisplay)
+        print(items)
     }
     
     func getWeatherItem(city: String) async throws -> [WeatherItem] {
         return try await WeatherAPI.reload(refresh: true, placeNames: [city])
     }
 }
-
-
 
 private func backgroundImageView() -> some View {
     RemoteImage(url: backgroundURL) { image in
