@@ -10,6 +10,8 @@ import Foundation
 
 
 public class MuxCacher {
+    
+    private let muxRootDomain = "_Root.Domain"
 
     public static func load<T: Decodable>(domain: String, key: String, type: T.Type) -> T? {
         return MuxDB.shared.load(keyToLoad: domain + "/" + key, type: type)

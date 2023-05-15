@@ -53,8 +53,13 @@ struct ContentView: View {
                 if !citiesToDisplay.contains(selectedCity) {
                     citiesToDisplay.append(selectedCity)
                 }
-                print(citiesToDisplay)
-                print(items)
+                Task {
+                    items = try await WeatherAPI.reload(refresh: true, placeNames: citiesToDisplay)
+                    for item in items {
+                        MuxCacher.save(item, domain: "Weather", key: item.place.lat + "," + item.place.lon)
+                    }
+                    
+                }
             }
             
             List {
@@ -75,15 +80,14 @@ struct ContentView: View {
     }
     
     func delete(at offsets: IndexSet) {
+        let index = offsets[offsets.startIndex]
+        let itemToDelete = items[index]
+        print(itemToDelete)
+        MuxCacher.delete(domain: "Weather", key: itemToDelete.place.lat + "," + itemToDelete.place.lon)
         items.remove(atOffsets: offsets)
         citiesToDisplay.remove(atOffsets: offsets)
-        print(citiesToDisplay)
-        print(items)
     }
     
-    func getWeatherItem(city: String) async throws -> [WeatherItem] {
-        return try await WeatherAPI.reload(refresh: true, placeNames: [city])
-    }
 }
 
 private func backgroundImageView() -> some View {

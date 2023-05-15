@@ -33,7 +33,7 @@ struct Weather: Codable, Hashable {
 }
 
 
-struct WeatherItem: Hashable {
+struct WeatherItem: Codable, Hashable {
     var place: WeatherPlace
     var weather: Weather?
 }
