@@ -11,8 +11,6 @@ import Foundation
 
 public class MuxCacher {
     
-    private let muxRootDomain = "_Root.Domain"
-    
     public static func load<T: Decodable>(domain: String, key: String, type: T.Type) -> T? {
         return MuxDB.shared.load(keyToLoad: domain + "/" + key, type: type)
     }
@@ -29,12 +27,4 @@ public class MuxCacher {
         MuxDB.shared.deleteAll();
     }
     
-    private static func cacheFileURL(domain: String, key: String, create: Bool) -> URL {
-        return cacheDirURL(domain: domain, create: create).appendingPathComponent(key).appendingPathExtension("json")
-    }
-    
-    private static func cacheDirURL(domain: String, create: Bool) -> URL {
-        let dir = "AsyncMux/" + domain
-        return FileManager.default.cachesDirectory(subDirectory: dir, create: create)
-    }
 }
