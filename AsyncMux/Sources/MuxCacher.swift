@@ -11,8 +11,8 @@ import Foundation
 
 public class MuxCacher {
     
-    public static func load<T: Decodable>(domain: String, key: String, type: T.Type) -> T? {
-        return MuxDB.shared.load(keyToLoad: domain + "/" + key, type: type)
+    public static func load<T: Decodable>(domain: String, type: T.Type) -> [T]? {
+        return MuxDB.shared.loadAll(domain: domain, type: type)
     }
     
     public static func save<T: Encodable>(_ object: T, domain: String, key: String) {

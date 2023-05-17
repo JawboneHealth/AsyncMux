@@ -79,4 +79,20 @@ class MuxDB {
         }
     }
     
+    func loadAll<T: Decodable>(domain: String, type: T.Type) -> [T]? {
+        do {
+            var decodedItems: [T] = []
+            let items = Array(try db.prepare(dataTable)).map{ $0[data] }
+            for item in items {
+                decodedItems.append( try JSONDecoder().decode(type, from: (item)))
+            }
+                
+            print("Loaded Item: \(decodedItems)")
+            return decodedItems
+        } catch {
+            print(error)
+            return nil
+        }
+    }
+    
 }
