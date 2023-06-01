@@ -12,28 +12,26 @@ import AsyncMux
 
 private let backgroundURL = URL(string: "https://images.unsplash.com/photo-1513051265668-0ebab31671ae")!
 
+
 struct ContentView: View {
-    
+
     @State var items: [WeatherItem] = []
     @State var isLoading: Bool = false
-    @State var selectedCity: String = ""
-    @State var citiesToDisplay: [String] = ["New York, US", "London, GB", "Paris, FR", "Tokyo, JP"]
-    @FocusState private var isFocused : Bool
-    
+
     var body: some View {
         listView()
             .background(backgroundImageView())
             .preferredColorScheme(.dark)
-        
-            .serverTask(withAlert: true) {
-                items = try await WeatherAPI.reload(refresh: false, placeNames: citiesToDisplay)
-            }
-        
-            .serverRefreshable(withAlert: false) {
-                items = try await WeatherAPI.reload(refresh: true, placeNames: citiesToDisplay)
-            }
+
+        .serverTask(withAlert: true) {
+            items = try await WeatherAPI.reload(refresh: false)
+        }
+
+        .serverRefreshable(withAlert: false) {
+            items = try await WeatherAPI.reload(refresh: true)
+        }
     }
-    
+
     @MainActor // this is because List() generates an error in strict mode, an Apple bug
     @ViewBuilder
     private func listView() -> some View {
@@ -42,26 +40,6 @@ struct ContentView: View {
                 .overlay(ProgressView())
         }
         else {
-            TextField(
-                "ex. Munich, GR",
-                text: $selectedCity
-            )
-            .padding(20)
-            .font(.system(size: 24))
-            .focused($isFocused)
-            .onSubmit {
-                if !citiesToDisplay.contains(selectedCity) {
-                    citiesToDisplay.append(selectedCity)
-                }
-                Task {
-                    items = try await WeatherAPI.reload(refresh: true, placeNames: citiesToDisplay)
-                    for item in items {
-                        MuxCacher.save(item, domain: "Weather", key: item.place.lat + "," + item.place.lon)
-                    }
-                    
-                }
-            }
-            
             List {
                 ForEach(items, id: \.self) { item in
                     HStack {
@@ -71,36 +49,24 @@ struct ContentView: View {
                     }
                     .listRowBackground(Color.clear)
                 }
-                .onDelete(perform: delete)
             }
             .listStyle(.inset)
             .font(.title2)
             .scrollContentBackground(.hidden)
         }
     }
-    
-    func delete(at offsets: IndexSet) {
-        let index = offsets[offsets.startIndex]
-        let itemToDelete = items[index]
-        print(itemToDelete)
-        MuxCacher.delete(domain: "Weather", key: itemToDelete.place.lat + "," + itemToDelete.place.lon)
-        items.remove(atOffsets: offsets)
-        citiesToDisplay.remove(atOffsets: offsets)
-    }
-    
-}
 
-private func backgroundImageView() -> some View {
-    RemoteImage(url: backgroundURL) { image in
-        image
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .ignoresSafeArea()
-    } placeholder: {
-        Color(UIColor.systemBackground)
+    private func backgroundImageView() -> some View {
+        RemoteImage(url: backgroundURL) { image in
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .ignoresSafeArea()
+        } placeholder: {
+            Color(UIColor.systemBackground)
+        }
     }
 }
-
 
 
 struct ContentView_Previews: PreviewProvider {
