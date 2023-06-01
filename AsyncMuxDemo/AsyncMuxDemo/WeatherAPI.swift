@@ -33,56 +33,37 @@ struct Weather: Codable, Hashable {
 }
 
 
-struct WeatherItem: Codable, Hashable {
+struct WeatherItem: Hashable {
     var place: WeatherPlace
     var weather: Weather?
 }
 
 
-class WeatherAPI{
+class WeatherAPI {
     
-    //    static let placeNames: [String] = ["New York, US", "London, UK", "Paris, FR", "Tokyo, JP"]
+    static let placeNames: [String] = ["New York, US", "London, UK", "Paris, FR", "Tokyo, JP"]
     
-    static func reload(refresh: Bool, placeNames: [String]) async throws -> [WeatherItem] {
-        do {
-            let tasks = try await resolve(placeNames: placeNames)
-                .map { place in
-                    Task {
-                        try await WeatherItem(place: place, weather: WeatherAPI.weather
-                            .refresh(refresh)
-                            .request(key: place.key))
-                        
-                        
-                        
-                    }
+    
+    static func reload(refresh: Bool) async throws -> [WeatherItem] {
+        let tasks = try await WeatherAPI.places
+            .refresh(refresh)
+            .request()
+            .map { place in
+                Task {
+                    try await WeatherItem(place: place, weather: WeatherAPI.weather
+                        .refresh(refresh)
+                        .request(key: place.key))
                 }
-            var items: [WeatherItem] = []
-            for task in tasks {
-                try await items.append(task.value)
             }
-            return items
-            
-        } catch {
-            let tasks = try await resolve(placeNames: placeNames)
-                .map { place in
-                    Task {
-                        MuxCacher.load(domain: "Weather", key: place.lat + "," + place.lon, type: WeatherItem.self)
-                        
-                        
-                    }
-                }
-            var items: [WeatherItem] = []
-            for task in tasks {
-                await items.append(task.value!)
-            }
-            return items
+        var items: [WeatherItem] = []
+        for task in tasks {
+            try await items.append(task.value)
         }
-        
-        
+        return items
     }
     
     
-    private static func resolve(placeNames: [String]) async throws -> [WeatherPlace]{
+    private static let places = Multiplexer {
         // Geocoding requests should be performed one at a time, hence the loop
         var result: [WeatherPlace] = []
         for name in placeNames {
@@ -108,12 +89,11 @@ class WeatherAPI{
                 if (error as NSError).domain == kCLErrorDomain, (error as NSError).code == 2 {
                     throw SilencableError(wrapped: error)
                 }
-                //throw error
-                result = MuxCacher.load(domain: "Weather", key: <#T##String#>, type: <#T##Decodable.Protocol#>)
+                throw error
             }
         }
         return result
-    }
+    }.register()
     
     
     private static let weather = MultiplexerMap { key in
