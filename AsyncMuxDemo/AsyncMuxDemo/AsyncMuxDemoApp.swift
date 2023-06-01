@@ -11,9 +11,6 @@ import AsyncMux
 @main
 struct AsyncMuxDemoApp: App {
     @Environment(\.scenePhase) var scenePhase
-    
-  init() {
-  }
 
     var body: some Scene {
         scene()
