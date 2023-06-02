@@ -1,4 +1,4 @@
-// swift-tools-version: 5.7
+// swift-tools-version: 5.8
 
 import PackageDescription
 
@@ -11,12 +11,14 @@ let package = Package(
             targets: ["AsyncMux"]),
     ],
     dependencies: [
-        // .package(url: /* package url */, from: "1.0.0"),
+      .package(url: "https://github.com/stephencelis/SQLite.swift.git", from: "0.14.1")
     ],
     targets: [
         .target(
             name: "AsyncMux",
-            dependencies: [],
+            dependencies: [
+                .product(name: "SQLite", package: "SQLite.swift")
+            ],
             path: "Sources"
         ),
     ]
