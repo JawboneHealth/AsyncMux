@@ -74,7 +74,6 @@ class MuxDB {
         
         var insertQuery: OpaquePointer?
         
-        // the 1 in this statement denotes that we are binding the text to the first placeholder ? in the insertStatement
         if(sqlite3_prepare_v2(db, insertStatement, -1, &insertQuery, nil)) == SQLITE_OK {
             sqlite3_bind_text(insertQuery, 1, key, -1, SQLITE_TRANSIENT)
             sqlite3_bind_text(insertQuery, 2, str, -1, SQLITE_TRANSIENT)
@@ -113,16 +112,24 @@ class MuxDB {
         var loadQuery: OpaquePointer?
         
         var showData: Data
-        
-        showData = []
+        var decodedData: T
         
         if sqlite3_prepare_v2(db, loadString, -1, &loadQuery, nil) == SQLITE_OK {
-            while sqlite3_step(loadQuery) == SQLITE_ROW {
-                showData += String(cString: sqlite3_column_text(loadQuery, 0)) + "\t\t" + String(cString: sqlite3_column_text(loadQuery, 1)) + "\n"
-            }
+            
+            showData = (String(cString: sqlite3_column_text(loadQuery, 1)).data(using: .utf8)!)
+            
         }
         print("Data loaded \(showData)")
         sqlite3_finalize(loadQuery)
+        
+        do{
+            try decodedData = JSONDecoder().decode(type, from: showData)
+        } catch {
+            print("Error decoding data")
+        }
+        
+        return decodedData
+        
     }
     
     func loadAll<T: Decodable>(domain: String, type: T.Type) -> [T]? {
