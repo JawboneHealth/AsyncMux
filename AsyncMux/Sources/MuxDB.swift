@@ -54,7 +54,7 @@ class MuxDB {
     func createTable() -> Bool {
         var success: Bool = false
         
-        let createTable = sqlite3_exec(db, "CREATE TABLE IF NOT EXIST Saved (Key TEXT NULL, Data TEXT NULL);", nil, nil, nil)
+        let createTable = sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS Saved (Key TEXT NULL, Data TEXT NULL);", nil, nil, nil)
         
         if(createTable != SQLITE_OK) {
             print("Error creating table")
@@ -66,7 +66,7 @@ class MuxDB {
         return success
     }
     
-    func save<T: Encodable>(key: String, data: T) -> Int64? {
+    func save<T: Encodable>(key: String, data: T) {
         let json = try! JSONEncoder().encode(data)
         let str = String(decoding: json, as: UTF8.self)
         
@@ -89,7 +89,7 @@ class MuxDB {
         
     }
     
-    func update<T: Encodable>(key: String, data: T) -> Int64? {
+    func update<T: Encodable>(key: String, data: T) {
         let json = try! JSONEncoder().encode(data)
         let str = String(decoding: json, as: UTF8.self)
         
@@ -141,20 +141,21 @@ class MuxDB {
         
         if sqlite3_prepare_v2(db, loadString, -1, &loadQuery, nil) == SQLITE_OK {
             
-            showData = (String(cString: sqlite3_column_text(loadQuery, 1)).data(using: .utf8)!)
+        showData = (String(cString: sqlite3_column_text(loadQuery, 1)).data(using: .utf8)!)
+            print("Data loaded \(showData)")
+            sqlite3_finalize(loadQuery)
+            
+            do{
+                try decodedData = JSONDecoder().decode(type, from: showData)
+                return decodedData
+            } catch {
+                print("Error decoding data")
+            }
+            
             
         }
-        print("Data loaded \(showData)")
-        sqlite3_finalize(loadQuery)
         
-        do{
-            try decodedData = JSONDecoder().decode(type, from: showData)
-        } catch {
-            print("Error decoding data")
-        }
-        
-        return decodedData
-        
+        return nil
     }
     
     func loadAll<T: Decodable>(domain: String, type: T.Type) -> [T]? {
