@@ -18,7 +18,7 @@ class MuxDB {
     
     private var db: OpaquePointer?
     
-    private init() {
+    init() {
         db = openDatabase()
         
         if(!createTable()) {
@@ -60,13 +60,20 @@ class MuxDB {
             print("Error creating table")
             success = false
         } else {
+            let createIndex = sqlite3_exec(db, "CREATE INDEX key_domain ON Saved (Key);", nil, nil, nil)
+            if (createIndex != SQLITE_OK) {
+                print ("Error creating index")
+            } else {
+                print("Index created successfully")
+            }
             print("Table created successfully")
             success = true
         }
         return success
     }
     
-    func save<T: Encodable>(key: String, data: T) {
+    func save<T: Encodable>(key: String, data: T) -> String  {
+        var result = "No success"
         let json = try! JSONEncoder().encode(data)
         let str = String(decoding: json, as: UTF8.self)
         
@@ -80,16 +87,19 @@ class MuxDB {
             
             if(sqlite3_step(insertQuery) == SQLITE_DONE) {
                 print("Data saved successfully")
+                result = "Success"
             } else {
                 print("Error saving data")
             }
             
             sqlite3_finalize(insertQuery)
+            
         }
-        
+        return result
     }
     
-    func update<T: Encodable>(key: String, data: T) {
+    func update<T: Encodable>(key: String, data: T) -> String {
+        var result = "No success"
         let json = try! JSONEncoder().encode(data)
         let str = String(decoding: json, as: UTF8.self)
         
@@ -99,27 +109,32 @@ class MuxDB {
         if(sqlite3_prepare_v2(db, updateStatement, -1, &updateQuery, nil)) == SQLITE_OK {
             if sqlite3_step(updateQuery) == SQLITE_DONE {
                 print("Data updated successfully")
+                result = "Success"
             } else {
                 print ("Error updating data")
             }
         }
+        return result
     }
     
-    func delete(keyToDelete: String) {
+    func delete(keyToDelete: String) -> String{
+        var result = "No success"
         let deleteStatement = "DELETE FROM Saved WHERE Key = \(keyToDelete);"
         var deleteQuery: OpaquePointer?
         
         if(sqlite3_prepare_v2(db, deleteStatement, -1, &deleteQuery, nil)) == SQLITE_OK {
             if sqlite3_step(deleteQuery) == SQLITE_DONE {
                 print("Data deleted successfully")
+                var result = "Success"
             } else {
                 print ("Error deleting data")
             }
         }
+        return result
     }
     
-    func deleteAll() {
-        let deleteStatement = "DELETE FROM Saved;"
+    func deleteAll(domainToDelete: String) {
+        let deleteStatement = "DELETE FROM Saved WHERE substr(Key, 1, \(domainToDelete.count) = \(domainToDelete);"
         var deleteQuery: OpaquePointer?
         
         if(sqlite3_prepare_v2(db, deleteStatement, -1, &deleteQuery, nil)) == SQLITE_OK {

@@ -15,7 +15,19 @@
 		3635173229746D2700F9B045 /* MuxRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3635172A29746D2600F9B045 /* MuxRepository.swift */; };
 		36E20F2F298215640022D151 /* Multiplexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E20F2E298215640022D151 /* Multiplexer.swift */; };
 		42DA97DE2A2E0F3800F345E6 /* MuxDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DA97DD2A2E0F3800F345E6 /* MuxDB.swift */; };
+		42DA97E62A41DC7500F345E6 /* AsyncMuxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DA97E52A41DC7500F345E6 /* AsyncMuxTests.swift */; };
+		42DA97E72A41DC7500F345E6 /* AsyncMux.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 362CC58A29746BE900059933 /* AsyncMux.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		42DA97E82A41DC7500F345E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 362CC58129746BE900059933 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 362CC58929746BE900059933;
+			remoteInfo = AsyncMux;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		362CC58A29746BE900059933 /* AsyncMux.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AsyncMux.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -27,6 +39,8 @@
 		3635172A29746D2600F9B045 /* MuxRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuxRepository.swift; sourceTree = "<group>"; };
 		36E20F2E298215640022D151 /* Multiplexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Multiplexer.swift; sourceTree = "<group>"; };
 		42DA97DD2A2E0F3800F345E6 /* MuxDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuxDB.swift; sourceTree = "<group>"; };
+		42DA97E32A41DC7500F345E6 /* AsyncMuxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsyncMuxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		42DA97E52A41DC7500F345E6 /* AsyncMuxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncMuxTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +51,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		42DA97E02A41DC7500F345E6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42DA97E72A41DC7500F345E6 /* AsyncMux.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -44,6 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				362CC58C29746BE900059933 /* Sources */,
+				42DA97E42A41DC7500F345E6 /* AsyncMuxTests */,
 				362CC58B29746BE900059933 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -53,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				362CC58A29746BE900059933 /* AsyncMux.framework */,
+				42DA97E32A41DC7500F345E6 /* AsyncMuxTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,6 +94,14 @@
 				42DA97DD2A2E0F3800F345E6 /* MuxDB.swift */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		42DA97E42A41DC7500F345E6 /* AsyncMuxTests */ = {
+			isa = PBXGroup;
+			children = (
+				42DA97E52A41DC7500F345E6 /* AsyncMuxTests.swift */,
+			);
+			path = AsyncMuxTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -104,6 +136,24 @@
 			productReference = 362CC58A29746BE900059933 /* AsyncMux.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		42DA97E22A41DC7500F345E6 /* AsyncMuxTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42DA97EA2A41DC7500F345E6 /* Build configuration list for PBXNativeTarget "AsyncMuxTests" */;
+			buildPhases = (
+				42DA97DF2A41DC7500F345E6 /* Sources */,
+				42DA97E02A41DC7500F345E6 /* Frameworks */,
+				42DA97E12A41DC7500F345E6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42DA97E92A41DC7500F345E6 /* PBXTargetDependency */,
+			);
+			name = AsyncMuxTests;
+			productName = AsyncMuxTests;
+			productReference = 42DA97E32A41DC7500F345E6 /* AsyncMuxTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -111,11 +161,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
 					362CC58929746BE900059933 = {
 						CreatedOnToolsVersion = 14.2;
 						LastSwiftMigration = 1420;
+					};
+					42DA97E22A41DC7500F345E6 = {
+						CreatedOnToolsVersion = 14.3;
 					};
 				};
 			};
@@ -133,12 +187,20 @@
 			projectRoot = "";
 			targets = (
 				362CC58929746BE900059933 /* AsyncMux */,
+				42DA97E22A41DC7500F345E6 /* AsyncMuxTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		362CC58829746BE900059933 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42DA97E12A41DC7500F345E6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -162,7 +224,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		42DA97DF2A41DC7500F345E6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42DA97E62A41DC7500F345E6 /* AsyncMuxTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		42DA97E92A41DC7500F345E6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 362CC58929746BE900059933 /* AsyncMux */;
+			targetProxy = 42DA97E82A41DC7500F345E6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		362CC58F29746BE900059933 /* Debug */ = {
@@ -294,7 +372,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 639KEQWW6F;
+				DEVELOPMENT_TEAM = HX97U29248;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -329,7 +407,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 639KEQWW6F;
+				DEVELOPMENT_TEAM = HX97U29248;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -356,6 +434,46 @@
 			};
 			name = Release;
 		};
+		42DA97EB2A41DC7500F345E6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HX97U29248;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = all.health.AsyncMuxTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		42DA97EC2A41DC7500F345E6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HX97U29248;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = all.health.AsyncMuxTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -373,6 +491,15 @@
 			buildConfigurations = (
 				362CC59229746BE900059933 /* Debug */,
 				362CC59329746BE900059933 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42DA97EA2A41DC7500F345E6 /* Build configuration list for PBXNativeTarget "AsyncMuxTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42DA97EB2A41DC7500F345E6 /* Debug */,
+				42DA97EC2A41DC7500F345E6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

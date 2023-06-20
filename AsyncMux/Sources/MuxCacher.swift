@@ -27,6 +27,6 @@ public class MuxCacher {
     }
     
     public static func deleteDomain(_ domain: String) {
-        MuxDB.shared.deleteAll();
+        MuxDB.shared.deleteAll(domainToDelete: domain);
     }
 }
