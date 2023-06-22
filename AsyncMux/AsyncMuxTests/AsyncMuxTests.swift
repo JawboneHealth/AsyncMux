@@ -7,14 +7,23 @@
 
 import XCTest
 @testable import AsyncMux
+import SQLite3
 
-final class AsyncMuxTests: XCTestCase {
+final class AsyncMuxTests<T: Codable>: XCTestCase {
     var sut: MuxDB!
     
-    struct Athlete: Codable {
+    struct Athlete: Codable, Equatable {
+        let domain: String
         let name: String
         let sport: String
         let rank: Int64
+    }
+    
+    struct Car: Codable, Equatable {
+        let domain: String
+        let make: String
+        let model: String
+        let year: Int64
     }
     
     override func setUpWithError() throws {
@@ -28,15 +37,59 @@ final class AsyncMuxTests: XCTestCase {
     }
 
     func testSaveAndLoad() {
-        let testData = Athlete(name: "Lindsey", sport: "skiing", rank: 1)
+        let testData = Athlete(domain: "Athletes", name: "Lindsey", sport: "skiing", rank: 1)
+        var athlete: Athlete
+        
+        sut.save(key: "\(testData.domain)/\(testData.name)", data: testData)
+        
+        athlete = sut.load(keyToLoad: "\(testData.domain)/\(testData.name)", type: AsyncMuxTests<T>.Athlete.self)!
+        
+        XCTAssertEqual(testData, athlete)
+    }
+    
+    func testSaveWhenKeyExistsUpdate() {
+        let testData = Athlete(domain: "Athletes", name: "Lindsey", sport: "skiing", rank: 1)
+        var athlete: Athlete
+        
+        sut.save(key: "\(testData.domain)/\(testData.name)", data: testData)
+        
+        athlete = sut.load(keyToLoad: "\(testData.domain)/\(testData.name)", type: AsyncMuxTests<T>.Athlete.self)!
+        
+        XCTAssertEqual(testData, athlete)
     }
     
     func testDelete() {
+        let testData = Athlete(domain: "Athletes", name: "Lindsey", sport: "skiing", rank: 1)
+        var athletes: [Athlete]
+        
+        sut.save(key: "\(testData.domain)/\(testData.name)", data: testData)
+        
+        sut.delete(keyToDelete: "\(testData.domain)/\(testData.name)")
+        
+        athletes = sut.loadAll(domain: "Athletes", type: AsyncMuxTests<T>.Athlete.self)!
+        
+        XCTAssertEqual(athletes.count, 0)
        
     }
     
     func testDeleteAll() {
+        let testData1 = Athlete(domain: "Athletes", name: "Lindsey", sport: "skiing", rank: 1)
+        let testData2 = Athlete(domain: "Athletes", name: "Lindsey", sport: "skiing", rank: 1)
+        let testData3 = Car(domain: "Cars", make: "Toyota", model: "Tundra", year: 2018)
+        let testData4 = Car(domain: "Cars", make: "Ford", model: "F350", year: 2008)
+        
+        sut.save(key: "\(testData1.domain)/\(testData1.name)", data: testData1)
+        sut.save(key: "\(testData2.domain)/\(testData2.name)", data: testData2)
+        sut.save(key: "\(testData3.domain)/\(testData3.model)", data: testData3)
+        sut.save(key: "\(testData4.domain)/\(testData4.model)", data: testData4)
+        
+        sut.deleteAll(domainToDelete: "Athletes")
+        
+        let returnData = sut.loadAll(domain: "Athletes", type: AsyncMuxTests<T>.Athlete.self)!
+        
+        XCTAssertEqual(returnData.count, 0)
         
     }
-
+    
+    
 }

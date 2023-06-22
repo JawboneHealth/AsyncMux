@@ -168,8 +168,9 @@ class MuxDB {
         return nil
     }
     
+    // for testing only
     func loadAll<T: Decodable>(domain: String, type: T.Type) -> [T]? {
-        let loadString = "SELECT KEY, DATA FROM SAVED"
+        let loadString = "SELECT KEY, DATA FROM SAVED WHERE substr(Key, 1, \(domain.count) = \(domain)"
         
         var loadQuery: OpaquePointer?
         
@@ -197,4 +198,5 @@ class MuxDB {
         return decodedData
         
     }
+
 }
