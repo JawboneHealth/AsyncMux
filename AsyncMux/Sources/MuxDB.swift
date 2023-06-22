@@ -72,12 +72,12 @@ class MuxDB {
         return success
     }
     
-    func save<T: Encodable>(key: String, data: T) -> String  {
-        var result = "No success"
+    func save<T: Encodable>(key: String, data: T) {
+        
         let json = try! JSONEncoder().encode(data)
         let str = String(decoding: json, as: UTF8.self)
         
-        let insertStatement = "INSERT INTO Saved (Key, Data) VALUES (?, ?);"
+        let insertStatement = "INSERT OR REPLACE INTO Saved (Key, Data) VALUES (?, ?);"
         
         var insertQuery: OpaquePointer?
         
@@ -87,7 +87,7 @@ class MuxDB {
             
             if(sqlite3_step(insertQuery) == SQLITE_DONE) {
                 print("Data saved successfully")
-                result = "Success"
+            
             } else {
                 print("Error saving data")
             }
@@ -95,11 +95,10 @@ class MuxDB {
             sqlite3_finalize(insertQuery)
             
         }
-        return result
     }
     
-    func update<T: Encodable>(key: String, data: T) -> String {
-        var result = "No success"
+    func update<T: Encodable>(key: String, data: T) {
+        
         let json = try! JSONEncoder().encode(data)
         let str = String(decoding: json, as: UTF8.self)
         
@@ -109,28 +108,24 @@ class MuxDB {
         if(sqlite3_prepare_v2(db, updateStatement, -1, &updateQuery, nil)) == SQLITE_OK {
             if sqlite3_step(updateQuery) == SQLITE_DONE {
                 print("Data updated successfully")
-                result = "Success"
+                
             } else {
                 print ("Error updating data")
             }
         }
-        return result
     }
     
-    func delete(keyToDelete: String) -> String{
-        var result = "No success"
+    func delete(keyToDelete: String) {
         let deleteStatement = "DELETE FROM Saved WHERE Key = \(keyToDelete);"
         var deleteQuery: OpaquePointer?
         
         if(sqlite3_prepare_v2(db, deleteStatement, -1, &deleteQuery, nil)) == SQLITE_OK {
             if sqlite3_step(deleteQuery) == SQLITE_DONE {
                 print("Data deleted successfully")
-                var result = "Success"
             } else {
                 print ("Error deleting data")
             }
         }
-        return result
     }
     
     func deleteAll(domainToDelete: String) {
