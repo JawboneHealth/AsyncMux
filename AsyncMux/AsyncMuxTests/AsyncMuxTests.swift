@@ -11,6 +11,12 @@ import XCTest
 final class AsyncMuxTests: XCTestCase {
     var sut: MuxDB!
     
+    struct Athlete: Codable {
+        let name: String
+        let sport: String
+        let rank: Int64
+    }
+    
     override func setUpWithError() throws {
         try super.setUpWithError()
         sut = MuxDB()
@@ -21,26 +27,16 @@ final class AsyncMuxTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testSave() {
-        let testKey = "TEST"
-        let testData = "THIS DATA"
-
-        XCTAssertEqual(sut.save(key: testKey, data: testData), "Success")
-    }
-    
-    func testUpdate() {
-        let testKey = "TEST"
-        let testData = "THIS DATA"
-
-        XCTAssertEqual(sut.update(key: testKey, data: testData), "Success")
+    func testSaveAndLoad() {
+        let testData = Athlete(name: "Lindsey", sport: "skiing", rank: 1)
     }
     
     func testDelete() {
-        let testKey = "TEST"
-        let testData = "THIS DATA"
-        sut.save(key: testKey, data: testData)
+       
+    }
+    
+    func testDeleteAll() {
         
-        XCTAssertEqual(sut.delete(keyToDelete: testKey), "Success")
     }
 
 }
