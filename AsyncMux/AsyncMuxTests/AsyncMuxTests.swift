@@ -48,14 +48,16 @@ final class AsyncMuxTests<T: Codable>: XCTestCase {
     }
     
     func testSaveWhenKeyExistsUpdate() {
-        let testData = Athlete(domain: "Athletes", name: "Lindsey", sport: "skiing", rank: 1)
+        let testData1 = Athlete(domain: "Athletes", name: "Lindsey", sport: "skiing", rank: 1)
+        let testData2 = Athlete(domain: "Athletes", name: "Lindsey", sport: "snowboarding", rank: 2)
         var athlete: Athlete
         
-        sut.save(key: "\(testData.domain)/\(testData.name)", data: testData)
+        sut.save(key: "\(testData1.domain)/\(testData1.name)", data: testData1)
+        sut.save(key: "\(testData2.domain)/\(testData2.name)", data: testData2)
         
-        athlete = sut.load(keyToLoad: "\(testData.domain)/\(testData.name)", type: AsyncMuxTests<T>.Athlete.self)!
+        athlete = sut.load(keyToLoad: "\(testData2.domain)/\(testData2.name)", type: AsyncMuxTests<T>.Athlete.self)!
         
-        XCTAssertEqual(testData, athlete)
+        XCTAssertEqual(testData2, athlete)
     }
     
     func testDelete() {
