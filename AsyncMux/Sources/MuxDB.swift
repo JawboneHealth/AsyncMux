@@ -107,7 +107,7 @@ class MuxDB {
                     return decodedData
                     
                 } catch {
-                    print("Error decoding data")
+                    DLOG("Error decoding data")
                 }
                 
             }
@@ -138,7 +138,7 @@ class MuxDB {
             do{
                 try decodedData.append(JSONDecoder().decode(type, from: data))
             } catch {
-                print("Error decoded data")
+                DLOG("Error decoded data")
             }
             
         }
