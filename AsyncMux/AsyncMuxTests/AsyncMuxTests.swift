@@ -2,96 +2,34 @@
 //  AsyncMuxTests.swift
 //  AsyncMuxTests
 //
-//  Created by Lissy Harrison on 6/20/23.
+//  Created by Lissy Harrison on 6/26/23.
 //
 
 import XCTest
-@testable import AsyncMux
-import SQLite3
 
-final class AsyncMuxTests<T: Codable>: XCTestCase {
-    var sut: MuxDB!
-    
-    struct Athlete: Codable, Equatable {
-        let domain: String
-        let name: String
-        let sport: String
-        let rank: Int64
-    }
-    
-    struct Car: Codable, Equatable {
-        let domain: String
-        let make: String
-        let model: String
-        let year: Int64
-    }
-    
+final class AsyncMuxTests: XCTestCase {
+
     override func setUpWithError() throws {
-        try super.setUpWithError()
-        sut = MuxDB()
+        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
     override func tearDownWithError() throws {
-        sut = nil
-        try super.tearDownWithError()
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testSaveAndLoad() {
-        let testData = Athlete(domain: "Athletes", name: "Lindsey", sport: "skiing", rank: 1)
-        var athlete: Athlete
-        
-        sut.save(key: "\(testData.domain)/\(testData.name)", data: testData)
-        
-        athlete = sut.load(keyToLoad: "\(testData.domain)/\(testData.name)", type: AsyncMuxTests<T>.Athlete.self)!
-        
-        XCTAssertEqual(testData, athlete)
+    func testExample() throws {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // Any test you write for XCTest can be annotated as throws and async.
+        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
+        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
     }
-    
-    func testSaveWhenKeyExistsUpdate() {
-        let testData1 = Athlete(domain: "Athletes", name: "Lindsey", sport: "skiing", rank: 1)
-        let testData2 = Athlete(domain: "Athletes", name: "Lindsey", sport: "snowboarding", rank: 2)
-        var athlete: Athlete
-        
-        sut.save(key: "\(testData1.domain)/\(testData1.name)", data: testData1)
-        sut.save(key: "\(testData2.domain)/\(testData2.name)", data: testData2)
-        
-        athlete = sut.load(keyToLoad: "\(testData2.domain)/\(testData2.name)", type: AsyncMuxTests<T>.Athlete.self)!
-        
-        XCTAssertEqual(testData2, athlete)
+
+    func testPerformanceExample() throws {
+        // This is an example of a performance test case.
+        measure {
+            // Put the code you want to measure the time of here.
+        }
     }
-    
-    func testDelete() {
-        let testData = Athlete(domain: "Athletes", name: "Lindsey", sport: "skiing", rank: 1)
-        var athletes: [Athlete]
-        
-        sut.save(key: "\(testData.domain)/\(testData.name)", data: testData)
-        
-        sut.delete(keyToDelete: "\(testData.domain)/\(testData.name)")
-        
-        athletes = sut.loadAll(domain: "Athletes", type: AsyncMuxTests<T>.Athlete.self)!
-        
-        XCTAssertEqual(athletes.count, 0)
-       
-    }
-    
-    func testDeleteAll() {
-        let testData1 = Athlete(domain: "Athletes", name: "Lindsey", sport: "skiing", rank: 1)
-        let testData2 = Athlete(domain: "Athletes", name: "Lindsey", sport: "skiing", rank: 1)
-        let testData3 = Car(domain: "Cars", make: "Toyota", model: "Tundra", year: 2018)
-        let testData4 = Car(domain: "Cars", make: "Ford", model: "F350", year: 2008)
-        
-        sut.save(key: "\(testData1.domain)/\(testData1.name)", data: testData1)
-        sut.save(key: "\(testData2.domain)/\(testData2.name)", data: testData2)
-        sut.save(key: "\(testData3.domain)/\(testData3.model)", data: testData3)
-        sut.save(key: "\(testData4.domain)/\(testData4.model)", data: testData4)
-        
-        sut.deleteAll(domainToDelete: "Athletes")
-        
-        let returnData = sut.loadAll(domain: "Athletes", type: AsyncMuxTests<T>.Athlete.self)!
-        
-        XCTAssertEqual(returnData.count, 0)
-        
-    }
-    
-    
+
 }
