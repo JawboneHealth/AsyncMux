@@ -30,7 +30,7 @@ final class AsyncMuxTests: XCTestCase {
     
     override func setUpWithError() throws {
         try super.setUpWithError()
-        sut = MuxDB()
+        sut = MuxDB.shared
         
     }
     

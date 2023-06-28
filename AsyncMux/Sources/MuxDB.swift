@@ -18,15 +18,9 @@ class MuxDB {
     
     private var db: OpaquePointer?
     
-    init() {
+    private init() {
         db = openDatabase()
-        
-        if(!createTable()) {
-            print ("Error creating table in initializer")
-        } else {
-            print ("Table created in initializer")
-        }
-        
+        createTable()
     }
     // create database
     func openDatabase() -> OpaquePointer? {
@@ -37,13 +31,8 @@ class MuxDB {
         if let pathComponent = url.appendingPathComponent("MuxDB") {
             let filePath = pathComponent.path
             if sqlite3_open(filePath, &db) == SQLITE_OK {
-                print("Successfully opened database at \(filePath)")
                 return db
-            } else {
-                print("Error opening database at \(filePath)")
             }
-        } else {
-            print("Filepath is not available")
         }
         
         return db
@@ -51,25 +40,14 @@ class MuxDB {
     
     // create a table in database
     
-    func createTable() -> Bool {
-        var success: Bool = false
+    func createTable(){
         
         let createTable = sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS Saved (Key TEXT NULL, Data TEXT NULL);", nil, nil, nil)
         
-        if(createTable != SQLITE_OK) {
-            print("Error creating table")
-            success = false
-        } else {
+        if(createTable == SQLITE_OK) {
+            
             let createIndex = sqlite3_exec(db, "CREATE UNIQUE INDEX IF NOT EXISTS key_domain ON Saved (Key);", nil, nil, nil)
-            if (createIndex != SQLITE_OK) {
-                print ("Error creating index")
-            } else {
-                print("Index created successfully")
-            }
-            print("Table created successfully")
-            success = true
         }
-        return success
     }
     
     func save<T: Encodable>(key: String, data: T) {
@@ -85,13 +63,6 @@ class MuxDB {
             sqlite3_bind_text(insertQuery, 1, key, -1, SQLITE_TRANSIENT)
             sqlite3_bind_text(insertQuery, 2, str, -1, SQLITE_TRANSIENT)
             
-            if(sqlite3_step(insertQuery) == SQLITE_DONE) {
-                print("Data saved successfully")
-            
-            } else {
-                print("Error saving data: ", sqlite3_step(insertQuery))
-            }
-            
             sqlite3_finalize(insertQuery)
             
         }
@@ -102,11 +73,7 @@ class MuxDB {
         var deleteQuery: OpaquePointer?
         
         if(sqlite3_prepare_v2(db, deleteStatement, -1, &deleteQuery, nil)) == SQLITE_OK {
-            if sqlite3_step(deleteQuery) == SQLITE_DONE {
-                print("Data deleted successfully")
-            } else {
-                print ("Error deleting data")
-            }
+            
             sqlite3_finalize(deleteQuery)
         }
         
@@ -117,11 +84,7 @@ class MuxDB {
         var deleteQuery: OpaquePointer?
         
         if(sqlite3_prepare_v2(db, deleteStatement, -1, &deleteQuery, nil)) == SQLITE_OK {
-            if sqlite3_step(deleteQuery) == SQLITE_DONE {
-                print("All data deleted successfully")
-            } else {
-                print ("Error deleting all data")
-            }
+            
             sqlite3_finalize(deleteQuery)
         }
         
@@ -131,7 +94,7 @@ class MuxDB {
         let loadString = "SELECT Key, Data FROM Saved WHERE Key = \(keyToLoad)"
         
         var loadQuery: OpaquePointer?
-
+        
         var decodedData: T
         
         if sqlite3_prepare_v2(db, loadString, -1, &loadQuery, nil) == SQLITE_OK {
@@ -140,7 +103,7 @@ class MuxDB {
                 sqlite3_finalize(loadQuery)
                 do{
                     try decodedData = JSONDecoder().decode(type, from: showData)
-                    print("Decoded Data: ", decodedData)
+                    
                     return decodedData
                     
                 } catch {
@@ -168,7 +131,7 @@ class MuxDB {
                 showData.append(String(cString: sqlite3_column_text(loadQuery, 1)).data(using: .utf8)!)
             }
         }
-        print("Data loaded \(showData)")
+        
         sqlite3_finalize(loadQuery)
         
         for data in showData {
@@ -182,5 +145,5 @@ class MuxDB {
         return decodedData
         
     }
-
+    
 }
