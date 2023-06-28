@@ -15,12 +15,12 @@
 		3635173229746D2700F9B045 /* MuxRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3635172A29746D2600F9B045 /* MuxRepository.swift */; };
 		36E20F2F298215640022D151 /* Multiplexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E20F2E298215640022D151 /* Multiplexer.swift */; };
 		42DA97DE2A2E0F3800F345E6 /* MuxDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DA97DD2A2E0F3800F345E6 /* MuxDB.swift */; };
-		42DA97E62A41DC7500F345E6 /* AsyncMuxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DA97E52A41DC7500F345E6 /* AsyncMuxTests.swift */; };
-		42DA97E72A41DC7500F345E6 /* AsyncMux.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 362CC58A29746BE900059933 /* AsyncMux.framework */; };
+		42EE16352A49D802003CEB21 /* AsyncMuxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EE16342A49D802003CEB21 /* AsyncMuxTests.swift */; };
+		42EE16362A49D802003CEB21 /* AsyncMux.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 362CC58A29746BE900059933 /* AsyncMux.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		42DA97E82A41DC7500F345E6 /* PBXContainerItemProxy */ = {
+		42EE16372A49D802003CEB21 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 362CC58129746BE900059933 /* Project object */;
 			proxyType = 1;
@@ -39,8 +39,8 @@
 		3635172A29746D2600F9B045 /* MuxRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuxRepository.swift; sourceTree = "<group>"; };
 		36E20F2E298215640022D151 /* Multiplexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Multiplexer.swift; sourceTree = "<group>"; };
 		42DA97DD2A2E0F3800F345E6 /* MuxDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuxDB.swift; sourceTree = "<group>"; };
-		42DA97E32A41DC7500F345E6 /* AsyncMuxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsyncMuxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		42DA97E52A41DC7500F345E6 /* AsyncMuxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncMuxTests.swift; sourceTree = "<group>"; };
+		42EE16322A49D802003CEB21 /* AsyncMuxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AsyncMuxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		42EE16342A49D802003CEB21 /* AsyncMuxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncMuxTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,11 +51,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		42DA97E02A41DC7500F345E6 /* Frameworks */ = {
+		42EE162F2A49D802003CEB21 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42DA97E72A41DC7500F345E6 /* AsyncMux.framework in Frameworks */,
+				42EE16362A49D802003CEB21 /* AsyncMux.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,7 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				362CC58C29746BE900059933 /* Sources */,
-				42DA97E42A41DC7500F345E6 /* AsyncMuxTests */,
+				42EE16332A49D802003CEB21 /* AsyncMuxTests */,
 				362CC58B29746BE900059933 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -76,7 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				362CC58A29746BE900059933 /* AsyncMux.framework */,
-				42DA97E32A41DC7500F345E6 /* AsyncMuxTests.xctest */,
+				42EE16322A49D802003CEB21 /* AsyncMuxTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -96,10 +96,10 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		42DA97E42A41DC7500F345E6 /* AsyncMuxTests */ = {
+		42EE16332A49D802003CEB21 /* AsyncMuxTests */ = {
 			isa = PBXGroup;
 			children = (
-				42DA97E52A41DC7500F345E6 /* AsyncMuxTests.swift */,
+				42EE16342A49D802003CEB21 /* AsyncMuxTests.swift */,
 			);
 			path = AsyncMuxTests;
 			sourceTree = "<group>";
@@ -136,22 +136,22 @@
 			productReference = 362CC58A29746BE900059933 /* AsyncMux.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		42DA97E22A41DC7500F345E6 /* AsyncMuxTests */ = {
+		42EE16312A49D802003CEB21 /* AsyncMuxTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 42DA97EA2A41DC7500F345E6 /* Build configuration list for PBXNativeTarget "AsyncMuxTests" */;
+			buildConfigurationList = 42EE16392A49D802003CEB21 /* Build configuration list for PBXNativeTarget "AsyncMuxTests" */;
 			buildPhases = (
-				42DA97DF2A41DC7500F345E6 /* Sources */,
-				42DA97E02A41DC7500F345E6 /* Frameworks */,
-				42DA97E12A41DC7500F345E6 /* Resources */,
+				42EE162E2A49D802003CEB21 /* Sources */,
+				42EE162F2A49D802003CEB21 /* Frameworks */,
+				42EE16302A49D802003CEB21 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				42DA97E92A41DC7500F345E6 /* PBXTargetDependency */,
+				42EE16382A49D802003CEB21 /* PBXTargetDependency */,
 			);
 			name = AsyncMuxTests;
 			productName = AsyncMuxTests;
-			productReference = 42DA97E32A41DC7500F345E6 /* AsyncMuxTests.xctest */;
+			productReference = 42EE16322A49D802003CEB21 /* AsyncMuxTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -168,7 +168,7 @@
 						CreatedOnToolsVersion = 14.2;
 						LastSwiftMigration = 1420;
 					};
-					42DA97E22A41DC7500F345E6 = {
+					42EE16312A49D802003CEB21 = {
 						CreatedOnToolsVersion = 14.3;
 					};
 				};
@@ -187,7 +187,7 @@
 			projectRoot = "";
 			targets = (
 				362CC58929746BE900059933 /* AsyncMux */,
-				42DA97E22A41DC7500F345E6 /* AsyncMuxTests */,
+				42EE16312A49D802003CEB21 /* AsyncMuxTests */,
 			);
 		};
 /* End PBXProject section */
@@ -200,7 +200,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		42DA97E12A41DC7500F345E6 /* Resources */ = {
+		42EE16302A49D802003CEB21 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -224,21 +224,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		42DA97DF2A41DC7500F345E6 /* Sources */ = {
+		42EE162E2A49D802003CEB21 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42DA97E62A41DC7500F345E6 /* AsyncMuxTests.swift in Sources */,
+				42EE16352A49D802003CEB21 /* AsyncMuxTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		42DA97E92A41DC7500F345E6 /* PBXTargetDependency */ = {
+		42EE16382A49D802003CEB21 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 362CC58929746BE900059933 /* AsyncMux */;
-			targetProxy = 42DA97E82A41DC7500F345E6 /* PBXContainerItemProxy */;
+			targetProxy = 42EE16372A49D802003CEB21 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -434,7 +434,7 @@
 			};
 			name = Release;
 		};
-		42DA97EB2A41DC7500F345E6 /* Debug */ = {
+		42EE163A2A49D802003CEB21 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -442,19 +442,16 @@
 				DEVELOPMENT_TEAM = HX97U29248;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = all.health.AsyncMuxTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		42DA97EC2A41DC7500F345E6 /* Release */ = {
+		42EE163B2A49D802003CEB21 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -462,12 +459,9 @@
 				DEVELOPMENT_TEAM = HX97U29248;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
-				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = all.health.AsyncMuxTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -495,11 +489,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		42DA97EA2A41DC7500F345E6 /* Build configuration list for PBXNativeTarget "AsyncMuxTests" */ = {
+		42EE16392A49D802003CEB21 /* Build configuration list for PBXNativeTarget "AsyncMuxTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				42DA97EB2A41DC7500F345E6 /* Debug */,
-				42DA97EC2A41DC7500F345E6 /* Release */,
+				42EE163A2A49D802003CEB21 /* Debug */,
+				42EE163B2A49D802003CEB21 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

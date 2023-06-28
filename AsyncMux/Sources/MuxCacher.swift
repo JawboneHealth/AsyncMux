@@ -18,9 +18,6 @@ public class MuxCacher {
     public static func save<T: Encodable>(_ object: T, domain: String, key: String) {
         MuxDB.shared.save(key: domain + "/" + key, data: object)
     }
-    public static func update<T: Encodable>(_ object: T, domain: String, key: String) {
-        MuxDB.shared.update(key: domain + "/" + key, data: object)
-    }
     
     public static func delete(domain: String, key: String) {
         MuxDB.shared.delete(keyToDelete: domain + "/" + key);

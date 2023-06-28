@@ -60,7 +60,7 @@ class MuxDB {
             print("Error creating table")
             success = false
         } else {
-            let createIndex = sqlite3_exec(db, "CREATE INDEX key_domain ON Saved (Key);", nil, nil, nil)
+            let createIndex = sqlite3_exec(db, "CREATE UNIQUE INDEX IF NOT EXISTS key_domain ON Saved (Key);", nil, nil, nil)
             if (createIndex != SQLITE_OK) {
                 print ("Error creating index")
             } else {
@@ -77,7 +77,7 @@ class MuxDB {
         let json = try! JSONEncoder().encode(data)
         let str = String(decoding: json, as: UTF8.self)
         
-        let insertStatement = "INSERT OR REPLACE INTO Saved (Key, Data) VALUES (?, ?);"
+        let insertStatement = "REPLACE INTO Saved (Key, Data) VALUES (?, ?);"
         
         var insertQuery: OpaquePointer?
         
@@ -89,29 +89,11 @@ class MuxDB {
                 print("Data saved successfully")
             
             } else {
-                print("Error saving data")
+                print("Error saving data: ", sqlite3_step(insertQuery))
             }
             
             sqlite3_finalize(insertQuery)
             
-        }
-    }
-    
-    func update<T: Encodable>(key: String, data: T) {
-        
-        let json = try! JSONEncoder().encode(data)
-        let str = String(decoding: json, as: UTF8.self)
-        
-        let updateStatement = "UPDATE Saved SET Data = \(str) WHERE Key = \(key);"
-        var updateQuery: OpaquePointer?
-        
-        if(sqlite3_prepare_v2(db, updateStatement, -1, &updateQuery, nil)) == SQLITE_OK {
-            if sqlite3_step(updateQuery) == SQLITE_DONE {
-                print("Data updated successfully")
-                
-            } else {
-                print ("Error updating data")
-            }
         }
     }
     
@@ -125,7 +107,9 @@ class MuxDB {
             } else {
                 print ("Error deleting data")
             }
+            sqlite3_finalize(deleteQuery)
         }
+        
     }
     
     func deleteAll(domainToDelete: String) {
@@ -138,33 +122,34 @@ class MuxDB {
             } else {
                 print ("Error deleting all data")
             }
+            sqlite3_finalize(deleteQuery)
         }
+        
     }
     
     func load<T: Decodable>(keyToLoad: String, type: T.Type) -> T? {
         let loadString = "SELECT Key, Data FROM Saved WHERE Key = \(keyToLoad)"
         
         var loadQuery: OpaquePointer?
-        
-        var showData: Data
+
         var decodedData: T
         
         if sqlite3_prepare_v2(db, loadString, -1, &loadQuery, nil) == SQLITE_OK {
-            
-        showData = (String(cString: sqlite3_column_text(loadQuery, 1)).data(using: .utf8)!)
-            print("Data loaded \(showData)")
-            sqlite3_finalize(loadQuery)
-            
-            do{
-                try decodedData = JSONDecoder().decode(type, from: showData)
-                return decodedData
-            } catch {
-                print("Error decoding data")
+            if sqlite3_step(loadQuery) == SQLITE_ROW {
+                let showData = String(cString: sqlite3_column_text(loadQuery, 1)).data(using: .utf8)!
+                sqlite3_finalize(loadQuery)
+                do{
+                    try decodedData = JSONDecoder().decode(type, from: showData)
+                    print("Decoded Data: ", decodedData)
+                    return decodedData
+                    
+                } catch {
+                    print("Error decoding data")
+                }
+                
             }
             
-            
         }
-        
         return nil
     }
     
@@ -194,7 +179,6 @@ class MuxDB {
             }
             
         }
-        
         return decodedData
         
     }
